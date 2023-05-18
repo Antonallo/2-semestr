@@ -6,34 +6,41 @@ namespace lab_2
 	class String 
 	{
 	private:
-		char* str;
+		char* m_str;
 		size_t m_size;
 	public:
-		// Базовый конструктор
-		String() : str(nullptr), m_size(0) {};
+		// Дефолтный конструктор
+		String() : m_str(nullptr), m_size(0) {};
 
 		// Конструктор копирования
-		String(const String& other) : str(nullptr), m_size(other.m_size) {
+		String(const String& other) : m_str(nullptr), m_size(other.m_size) {
 			if (m_size > 0) {
-				str = new char[m_size];
+				m_str = new char[m_size];
 				for (size_t i = 0; i < m_size; ++i) {
-					str[i] = other.str[i];
+					m_str[i] = other.m_str[i];
 				}
 			}
+		}
+
+		//Базовый конструктор
+		String(const char* s) {
+			m_size = strlen(s);
+			m_str = new char[m_size + 1];
+			strcpy(m_str, s);
 		}
 
 		// Оператор присваивания копированием
 		String& operator=(const String& other) {
 			if (this != &other) {
-				if (str) {
-					delete[] str;
-					str = nullptr;
+				if (m_str) {
+					delete[] m_str;
+					m_str = nullptr;
 				}
 				m_size = other.m_size;
 				if (m_size > 0) {
-					str = new char[m_size];
+					m_str = new char[m_size];
 					for (size_t i = 0; i < m_size; ++i) {
-						str[i] = other.str[i];
+						m_str[i] = other.m_str[i];
 					}
 				}
 			}
@@ -42,9 +49,9 @@ namespace lab_2
 
 		// Деструктор
 		~String() {
-			if (str) {
-				delete[] str;
-				str = nullptr;
+			if (m_str) {
+				delete[] m_str;
+				m_str = nullptr;
 				m_size = 0;
 			}
 		}
@@ -60,16 +67,16 @@ namespace lab_2
 			const size_t old_size = m_size;
 			m_size += other.m_size;
 			char* new_buffer = new char[m_size];
-			if (str) {
+			if (m_str) {
 				for (size_t i = 0; i < old_size; ++i) {
-					new_buffer[i] = str[i];
+					new_buffer[i] = m_str[i];
 				}
-				delete[] str;
+				delete[] m_str;
 			}
 			for (size_t i = old_size; i < m_size; ++i) {
-				new_buffer[i] = other.str[i - old_size];
+				new_buffer[i] = other.m_str[i - old_size];
 			}
-			str = new_buffer;
+			m_str = new_buffer;
 			return *this;
 		}
 
@@ -78,7 +85,7 @@ namespace lab_2
 			if (index >= m_size) {
 				throw std::out_of_range("Index is out of range");
 			}
-			return str[index];
+			return m_str[index];
 		}
 
 		int length() const {
@@ -87,7 +94,7 @@ namespace lab_2
 
 		int find(char c) const {
 			for (int i = 0; i < m_size; ++i) {
-				if (str[i] == c)
+				if (m_str[i] == c)
 					return i;
 			}
 			return -1;
@@ -95,10 +102,10 @@ namespace lab_2
 
 		bool operator<(const String& s) const {
 			int i = 0;
-			while (str[i] != '\0' && s.str[i] != '\0') {
-				if (str[i] < s.str[i])
+			while (m_str[i] != '\0' && s.m_str[i] != '\0') {
+				if (m_str[i] < s.m_str[i])
 					return true;
-				else if (str[i] > s.str[i])
+				else if (m_str[i] > s.m_str[i])
 					return false;
 				i++;
 			}
@@ -116,16 +123,20 @@ namespace lab_2
 			if (m_size != s.m_size)
 				return false;
 			int i = 0;
-			while (str[i] != '\0' && s.str[i] != '\0') {
-				if (str[i] != s.str[i])
+			while (m_str[i] != '\0' && s.m_str[i] != '\0') {
+				if (m_str[i] != s.m_str[i])
 					return false;
 				i++;
 			}
 			return true;
 		}
 
-		friend std::ostream& operator<<(std::ostream& os, const String& s) {
-			os << s.str;
+		friend std::ostream& operator<<(std::ostream& os,  String& s) {
+		    const char* c = s.c_str();
+			for (size_t i = 0; i < s.m_size; i++) {
+				os << c[i];
+			}
+
 			return os;
 		}
 
@@ -140,18 +151,18 @@ namespace lab_2
 			if (index >= m_size) {
 				throw std::out_of_range("Index is out of range");
 			}
-			return str[index];
+			return m_str[index];
 		}
 
-		const char* c_str() const {
-			return str;
+	    const char* c_str() const {
+			return m_str;
 		}
 	};
 }
 
 int main() 
 {
-	String s;
+	lab_2::String s;
 	std::cin >> s;
 	std::cout << s;
 	return 0;

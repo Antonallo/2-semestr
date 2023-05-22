@@ -82,9 +82,6 @@ namespace lab_2
 
 		// Оператор [] – чтение и изменение элемента
 		char& operator[](size_t index) {
-			if (index >= m_size) {
-				throw std::out_of_range("Index is out of range");
-			}
 			return m_str[index];
 		}
 

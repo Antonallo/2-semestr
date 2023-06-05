@@ -37,9 +37,11 @@ namespace lab_6
                 case LogLevel::Info:
                     logLevelString = "[INFO]";
                     break;
+#ifdef _DEBUG
                 case LogLevel::Debug:
                     logLevelString = "[DEBUG]";
                     break;
+#endif
                 case LogLevel::Warning:
                     logLevelString = "[WARNING]";
                     break;

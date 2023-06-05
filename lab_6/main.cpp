@@ -1,5 +1,5 @@
 #include "Logger.hpp"
-
+using namespace lab_6;
 int main() {
     Logger::GetInstance().Log("Application started.", LogLevel::Debug);
 

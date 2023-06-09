@@ -1,9 +1,10 @@
 #include<iostream>
 
 void my_memcpy(void* dst, const void* src, size_t size) {
+    size_t bytes_amount = sizeof(src) * size;
     char* dst_bytes = (char*)dst;
     const char* src_bytes = (const char*)src;
-    for (size_t i = 0; i < size; ++i)
+    for (size_t i = 0; i < bytes_amount; ++i)
         dst_bytes[i] = src_bytes[i];
 }
 
